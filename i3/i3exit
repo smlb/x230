@@ -1,0 +1,28 @@
+#!/bin/sh
+lock() {
+    slock 
+}
+
+case "$1" in
+    lock)
+        lock
+        ;;
+    logout)
+        i3-msg exit
+        ;;
+    suspend)
+        lock & sudo zzz 
+        ;;
+    hibernate)
+        lock & sudo ZZZ
+        ;;
+    reboot)
+        sudo reboot
+        ;;
+    shutdown)
+        sudo poweroff
+        ;;
+    *)
+        echo "Usage: $0 {lock|logout|suspend|hibernate|reboot|shutdown}"
+        exit 2
+esac
