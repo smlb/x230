@@ -23,6 +23,7 @@ set textwidth=0
 set display=lastline
 set term=xterm-256color
 set history=300
+set noshowmode
 
 set noswapfile
 set nobackup
@@ -55,7 +56,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'itchyny/lightline.vim'
 Plug 'lervag/vimtex'
-Plug 'kien/ctrlp.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()             
 
 try
@@ -75,19 +77,20 @@ if has("autocmd")
   augroup END
 endif
 
+" NerdTREE behaviour
+
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>rl :so $MYVIMRC<CR>
 nmap <silent> <leader>tt gt<CR>
 nmap <silent> <leader>hh :split<CR>
 nmap <silent> <leader>vv :vsplit<CR>
 nmap <silent> <leader>ff :NERDTreeToggle<CR>
-nmap <silent> <leader>cp :CtrlP
 nmap <leader>vcp :VimtexCompile<CR>
 nmap <silent><leader>tn :tabnew<CR>
 nmap <silent><leader>ss :sh<CR>
 nmap <silent><leader>qq :q!<CR>
 
-command SudoE :w !sudo tee %
+imap jj <Esc>
 
 " Cursor behaviour 
 let &t_SI = "\<Esc>[6 q"
