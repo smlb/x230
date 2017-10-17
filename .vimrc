@@ -1,7 +1,10 @@
+" Author: smlb
+" Files: ~/.vim*
+" Last Modified: 17/10/2017 
+
 filetype plugin on
 filetype indent on
 
-set termguicolors
 set nocompatible
 set showmatch
 set wildmenu
@@ -11,9 +14,8 @@ set cmdheight=2
 set backspace=eol,start,indent
 set ignorecase
 set incsearch  
+set hlsearch
 set magic
-set background=dark
-set t_Co=256
 set shell=/bin/zsh
 set mouse=a
 set autoread
@@ -25,20 +27,32 @@ set term=xterm-256color
 set history=300
 set noshowmode
 
+" File saving 
 set noswapfile
 set nobackup
 set nowb
 
+try
+  set undodir=~/.vim/tmp/undo
+  set undofile
+catch
+endtry
+
+" Encoding 
 set termencoding=utf-8
 set encoding=utf-8
-scriptencoding utf-8
 set ffs=unix
 
 set noerrorbells
 
+" Colors 
 syntax enable
 colorscheme quantum  
+set termguicolors
+set background=dark
+set t_Co=256
 
+" Tabs behaviour
 set expandtab
 set smarttab
 set shiftwidth=4
@@ -49,9 +63,10 @@ set ai
 set si 
 set wrap 
 set laststatus=2
-     
+ 
 set pastetoggle=<F2>
 
+" Plugins 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'itchyny/lightline.vim'
@@ -60,16 +75,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 call plug#end()             
 
-try
-  set undodir=~/.vim/tmp/undo
-  set undofile
-catch
-endtry
-
-let g:NERDTreeWinPos = "right"
-let mapleader = ","
-let g:mapleader = ","
-
 " Use templates for *.c files 
 if has("autocmd")
   augroup templates
@@ -77,7 +82,10 @@ if has("autocmd")
   augroup END
 endif
 
-" NerdTREE behaviour
+" Leader and Keybinds 
+let g:NERDTreeWinPos = "right"
+let mapleader = ","
+let g:mapleader = ","
 
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>rl :so $MYVIMRC<CR>
@@ -90,15 +98,27 @@ nmap <silent><leader>tn :tabnew<CR>
 nmap <silent><leader>ss :sh<CR>
 nmap <silent><leader>qq :q!<CR>
 
+nnoremap <leader><space> :nohlsearch<CR>
+nnoremap B ^
+nnoremap E $
+
 imap jj <Esc>
+xnoremap . :norm.<CR>
+
+map <PageUp> <Nop>
+map <PageDown> <Nop>
 
 " Cursor behaviour 
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
+" Mutt only
+au BufRead /tmp/mutt-* set tw=72
+
 let g:rehash256 = 1
 
+" Lightline configs | custom seoul256
 let g:lightline = {
       \ 'colorscheme': 'seoul256',
       \ 'active': {
