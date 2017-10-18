@@ -73,6 +73,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'lervag/vimtex'
 Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'junegunn/goyo.vim'
+Plug 'neomake/neomake'
 call plug#end()             
 
 " Use templates for *.c files 
@@ -97,6 +99,7 @@ nmap <leader>vcp :VimtexCompile<CR>
 nmap <silent><leader>tn :tabnew<CR>
 nmap <silent><leader>ss :sh<CR>
 nmap <silent><leader>qq :q!<CR>
+nmap <silent><leader>w :w<CR>
 
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap B ^
@@ -105,8 +108,15 @@ nnoremap E $
 imap jj <Esc>
 xnoremap . :norm.<CR>
 
-map <PageUp> <Nop>
+" Disable Page{Up,Down}
+map <PageUp> <Nop> 
 map <PageDown> <Nop>
+imap <PageUp> <Nop>
+imap <PageDown> <Nop>
+
+" No distraction mode
+nmap \p :Goyo
+nmap \pp :Goyo!
 
 " Cursor behaviour 
 let &t_SI = "\<Esc>[6 q"
@@ -117,6 +127,7 @@ let &t_EI = "\<Esc>[2 q"
 au BufRead /tmp/mutt-* set tw=72
 
 let g:rehash256 = 1
+call neomake#configure#automake('w')
 
 " Lightline configs | custom seoul256
 let g:lightline = {
