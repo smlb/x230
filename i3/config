@@ -1,8 +1,9 @@
+# smlb config file
 # http://i3wm.org/docs/userguide.html
 
 set $mod Mod4
 
-font pango:Monospace, FontAwesome 9
+font pango:Roboto Mono 10 
 
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #B6C2C3 #2e9ef4   #285577
@@ -12,13 +13,12 @@ client.urgent           #2f343a #900000 #B6C2C3 #900000   #900000
 client.placeholder      #000000 #0c0c0c #B6C2C3 #000000   #0c0c0c
 client.background       #121212
 
-# Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 new_window 1pixel 
 new_float 1pixel
 
-bindsym $mod+Return exec --no-startup-id urxvt 
-bindsym $mod+Shift+Return exec --no-startup-id urxvt -e tmux  
+bindsym $mod+Return exec --no-startup-id termite 
+bindsym $mod+Shift+Return exec --no-startup-id termite -e tmux  
 workspace_auto_back_and_forth yes
 hide_edge_borders smart
 
@@ -28,7 +28,7 @@ bindsym $mod+u border none
 
 # Bind shortcuts
 bindsym $mod+Shift+q kill
-bindsym $mod+p exec chromium 
+bindsym $mod+p exec firefox-nightly
 
 bindsym XF86AudioRaiseVolume exec amixer -q sset Master '5%+'
 bindsym XF86AudioLowerVolume exec amixer -q sset  Master '5%-'
@@ -37,9 +37,12 @@ bindsym XF86AudioPlay exec cmus-remote -u
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
 
-bindsym XF86ScreenSaver exec --no-startup-id slock  
-bindsym XF86Sleep exec slock && sudo zzz 
-bindsym $mod+d exec dmenu_run -i -l 8 -p "> " -nb "#202020" -nf "#cccccc" -sb "#424242" -sf "#cccccc" -fn "Monospace-9" 
+bindsym XF86ScreenSaver exec --no-startup-id i3lock -c 000000  
+bindsym XF86Sleep exec --no-startup-id i3lock -c 000000 && systemctl suspend 
+bindsym $mod+d exec dmenu_run -i -l 8 -p "> " -nb "#202020" -nf "#cccccc" -sb "#424242" -sf "#cccccc" -fn "RobotoMono-10" 
+
+bindsym $mod+Shift+s exec --no-startup-id maim ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
+bindsym $mod+Shift+x exec --no-startup-id maim -s ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
 
 # Scratchpad
 bindsym $mod+Shift+n move scratchpad
@@ -58,10 +61,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+ograve move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # System Mode - 
 bindsym $mod+x mode "$mode_system"
@@ -142,10 +145,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 mode "resize" {
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym ograve resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
 
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
@@ -161,7 +164,7 @@ bindsym $mod+m exec i3-msg bar mode toggle
 
 bar {
         status_command i3status 
-        font pango: Monospace, Icon 10
+        font pango: Roboto Mono, Icon 11
         position top
         mode dock 
         modifier Mod1 
@@ -179,20 +182,24 @@ bar {
 
 # Startup applications
 exec --no-startup-id feh --bg-fill ~/.config/i3/bgg.jpg 
-exec --no-startup-id firefox 
-exec --no-startup-id telegram-desktop
-# exec --no-startup-id pulseaudio --start 
-exec --no-startup-id i3-msg 'workspace 4; exec urxvt -name weechat -pe clipboard,url-select -e "ssh pi"' 
-exec --no-startup-id i3-msg 'workspace 2; exec urxvt -name scratchpad -geometry 150x50 -e cmus'
+exec --no-startup-id firefox-nightly 
+exec --no-startup-id tg 
+exec --no-startup-id pulseaudio --start 
+exec --no-startup-id setxkbmap -option ctrl:nocaps
+exec --no-startup-id xmodmap ~/.config/swap_esc
+exec --no-startup-id i3-msg 'workspace 4; exec termite --name=weechat' 
+exec --no-startup-id i3-msg 'workspace 2; exec termite --name=scratchpad --geometry 800x600 -e cmus'
+exec --no-startup-id i3-msg 'workspace 5; exec termite --name=mail -e tmux new -s mail'
 
 # Assign foo to workspaces 
 assign [class="Firefox"] 1
 assign [instance="weechat"] 4
-assign [class="Telegram"] 5
+assign [class="Telegram"] 4
 assign [class="Zathura"] 6
 assign [class="mpv"] 3
 assign [instance="mail"] 5
 
+for_window [class=".*"] title_format "<b>%title</b>"
 for_window [class="mpv"] floating enable
 for_window [class="mpv"] border normal
 for_window [window_role="pop-up"] floating enable
