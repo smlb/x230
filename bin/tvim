@@ -1,0 +1,7 @@
+VISESSION="$(tmux list-session | awk '/vim/ {gsub("vim:","vim"); print $1}')"
+
+if [[ "$VISESSION" == "vim" ]]; then
+    tmux attach -t $VISESSION
+else 
+    tmux new -s vim 
+fi
