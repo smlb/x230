@@ -37,6 +37,7 @@ bindsym XF86AudioPlay exec cmus-remote -u
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
 
+bindsym XF86Display exec --no-startup-id $HOME/bin/display.sh 
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -c 000000  
 bindsym XF86Sleep exec --no-startup-id i3lock -c 000000 && systemctl suspend 
 bindsym $mod+d exec dmenu_run -i -l 8 -p "> " -nb "#202020" -nf "#cccccc" -sb "#424242" -sf "#cccccc" -fn "RobotoMono-10" 
@@ -165,7 +166,7 @@ bindsym $mod+m exec i3-msg bar mode toggle
 bar {
         status_command i3status 
         font pango: Roboto Mono, Icon 11
-        position top
+        position top 
         mode dock 
         modifier Mod1 
         colors {
