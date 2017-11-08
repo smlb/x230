@@ -1,4 +1,4 @@
-pgrep redshift &> /dev/null || redshift -l 40.7107979:14.6716687 &> /dev/null &
+pgrep redshift &> /dev/null || redshift -l &> /dev/null &
 xmodmap ~/.config/swap_esc &
 
 if [[ $(xrandr | awk '/HDMI-3/ {print $2}') == "connected" ]]; then 
