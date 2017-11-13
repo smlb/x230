@@ -2,17 +2,16 @@
 " Files: ~/.vim*
 " Last Modified: 17/10/2017 
 
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
-set nocompatible
+" Standard options
 set showmatch
 set wildmenu
-set number
-set ruler
+set number 
+set relativenumber
+set ttyfast
 set cmdheight=2
 set backspace=eol,start,indent
-set ignorecase
 set incsearch  
 set hlsearch
 set magic
@@ -26,31 +25,23 @@ set display=lastline
 set term=xterm-256color
 set history=300
 set noshowmode
+set noerrorbells 
+set showcmd
 
 " File saving 
 set noswapfile
 set nobackup
 set nowb
 
-try
-  set undodir=~/.vim/tmp/undo
-  set undofile
-catch
-endtry
-
 " Encoding 
 set termencoding=utf-8
 set encoding=utf-8
-set ffs=unix
-
-set noerrorbells
+set fileformats=unix
 
 " Colors 
-syntax enable
+if !has('g:syntax_on')|syntax enable|endif
 colorscheme quantum  
 set termguicolors
-set background=dark
-set t_Co=256
 
 " Tabs behaviour
 set expandtab
@@ -64,20 +55,21 @@ set si
 set wrap 
 set laststatus=2
  
+" Paste
 set pastetoggle=<F2>
 
 " Plugins 
 call plug#begin('~/.vim/plugged')
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'lervag/vimtex'
 Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/goyo.vim'
 Plug 'neomake/neomake'
-call plug#end()             
+call plug#end()
 
-" Use templates for *.c files 
+" C Template 
 if has("autocmd")
   augroup templates
     autocmd BufNewFile *.c 0r ~/.vim/templates/main.c
@@ -85,7 +77,6 @@ if has("autocmd")
 endif
 
 " Leader and Keybinds 
-let g:NERDTreeWinPos = "right"
 let mapleader = ","
 let g:mapleader = ","
 
@@ -101,9 +92,10 @@ nmap <silent><leader>ss :sh<CR>
 nmap <silent><leader>qq :q!<CR>
 nmap <silent><leader>w :w<CR>
 
+nmap j gj
+nmap k gk
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap B ^
-nnoremap E $
 
 imap jj <Esc>
 xnoremap . :norm.<CR>
@@ -118,6 +110,15 @@ imap <PageDown> <Nop>
 nmap \p :Goyo
 nmap \pp :Goyo!
 
+" Modeline
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ft=%s ts=%d sw=%d tw=%d %set :",
+        \ &filetype, &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+
 " Cursor behaviour 
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
@@ -126,10 +127,17 @@ let &t_EI = "\<Esc>[2 q"
 " Mutt only
 au BufRead /tmp/mutt-* set tw=72
 
+" Netrw Options
+let g:netrw_liststyle = 3
+let g:netrw_banner = 0
+let g:netrw_winsize = 15 
+let g:netrw_altv= 1
+
 let g:rehash256 = 1
+let g:NERDTreeWinPos = "right"
 call neomake#configure#automake('w')
 
-" Lightline configs | custom seoul256
+" Lightline config
 let g:lightline = {
       \ 'colorscheme': 'seoul256',
       \ 'active': {
@@ -141,4 +149,4 @@ let g:lightline = {
       \ },
       \ }
 
-"vim: set ft=vim ts=2 sw=2 tw=500 et :
+" vim: set ft=vim ts=4 sw=4 tw=500 et :
