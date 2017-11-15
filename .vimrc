@@ -1,6 +1,6 @@
 " Author: smlb
 " Files: ~/.vim*
-" Last Modified: 17/10/2017 
+" Last Modified: 13/11/2017 
 
 filetype plugin indent on
 
@@ -40,8 +40,9 @@ set fileformats=unix
 
 " Colors 
 if !has('g:syntax_on')|syntax enable|endif
-colorscheme quantum  
 set termguicolors
+colorscheme quantum  
+
 
 " Tabs behaviour
 set expandtab
@@ -68,6 +69,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/goyo.vim'
 Plug 'neomake/neomake'
 call plug#end()
+
+set listchars=tab:▸\ ,eol:¬
 
 " C Template 
 if has("autocmd")
@@ -119,13 +122,27 @@ function! AppendModeline()
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+set rnu
+function! ToggleNumbersOn()
+    set nu!
+    set rnu
+endfunction
+function! ToggleRelativeOn()
+    set rnu!
+    set nu
+endfunction
+autocmd FocusLost * call ToggleRelativeOn()
+autocmd FocusGained * call ToggleRelativeOn()
+autocmd InsertEnter * call ToggleRelativeOn()
+autocmd InsertLeave * call ToggleRelativeOn()
+
 " Cursor behaviour 
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 " Mutt only
-au BufRead /tmp/mutt-* set tw=72
+au BufRead /tmp/neomutt-* set tw=72
 
 " Netrw Options
 let g:netrw_liststyle = 3
