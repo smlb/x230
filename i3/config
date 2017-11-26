@@ -3,22 +3,25 @@
 
 set $mod Mod4
 
-font pango:Roboto Mono 10 
+font pango:Roboto Mono 10
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #285577 #B6C2C3 #2e9ef4   #285577
-client.focused_inactive #333333 #121212 #B6C2C3 #484e50   #121212
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #2f343a #900000 #B6C2C3 #900000   #900000
-client.placeholder      #000000 #0c0c0c #B6C2C3 #000000   #0c0c0c
+client.focused          #285577 #285577 #285577 #285577   #285577
+client.focused_inactive #333333 #121212 #285577 #484e50   #121212
+client.unfocused        #222222 #222222 #888888 #292d2e   #222222
+client.urgent           #900000 #900000 #900000 #900000   #900000
+client.placeholder      #000000 #0c0c0c #285577 #000000   #0c0c0c
 client.background       #121212
 
 floating_modifier $mod
 new_window 1pixel 
 new_float 1pixel
 
+# Terminal keybinds 
 bindsym $mod+Return exec --no-startup-id termite 
 bindsym $mod+Shift+Return exec --no-startup-id termite -e tmux  
+
+# Back and forth | Borderds
 workspace_auto_back_and_forth yes
 hide_edge_borders smart
 
@@ -28,46 +31,53 @@ bindsym $mod+u border none
 
 # Bind shortcuts
 bindsym $mod+Shift+q kill
-bindsym $mod+p exec firefox-nightly
-
-bindsym XF86AudioRaiseVolume exec amixer -q sset Master '5%+'
-bindsym XF86AudioLowerVolume exec amixer -q sset  Master '5%-'
-bindsym XF86AudioMute exec amixer set Master toggle
-bindsym XF86AudioPlay exec cmus-remote -u  
-bindsym XF86AudioPrev exec cmus-remote -r
-bindsym XF86AudioNext exec cmus-remote -n
-
+bindsym $mod+p exec firefox
+bindsym $mod+Shift+m exec --no-startup-id termite -e neomutt 
+# XF86 Fn keys 
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q sset Master '5%+'
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q sset  Master '5%-'
+bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u  
+bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r
+bindsym XF86AudioNext exec --no-startup-id cmus-remote -n
+bindsym XF86AudioMicMute exec --no-startup-id amixer -q sset Mic toggle 
 bindsym XF86Display exec --no-startup-id $HOME/bin/display.sh 
 bindsym XF86ScreenSaver exec --no-startup-id i3lock -c 000000  
 bindsym XF86Sleep exec --no-startup-id i3lock -c 000000 && systemctl suspend 
-bindsym $mod+d exec dmenu_run -i -l 8 -p "> " -nb "#202020" -nf "#cccccc" -sb "#424242" -sf "#cccccc" -fn "RobotoMono-10" 
+bindsym XF86Launch1 exec --no-startup-id termite
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s 10%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 10%-
+# dmenu settings 
+bindsym $mod+d exec --no-startup-id dmenu_run -i -l 8 -p "" -nb "#131313" -nf "#cccccc" -sb "#262626" -sf "#ffffff" -fn "RobotoMono-10" 
 
-bindsym $mod+Shift+s exec --no-startup-id maim ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
-bindsym $mod+Shift+x exec --no-startup-id maim -s ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
+# Screenshot keybinds 
+bindsym Print exec --no-startup-id maim ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
+bindsym $mod+Print exec --no-startup-id maim -s ~/pictures/screen/screen-$(date "+%d-%m-%y-%H-%M-%S").png
 
 # Scratchpad
 bindsym $mod+Shift+n move scratchpad
 bindsym $mod+n scratchpad show
 
-# change focus
+# change focus with vim keybinds
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
+# Moving with arrows 
 bindsym $mod+b move absolute position center
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
+# move focused window with vim keybinds 
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# System Mode - 
+# System Mode - Super+x 
 bindsym $mod+x mode "$mode_system"
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (x) shutdown
 mode "$mode_system" {
@@ -82,6 +92,7 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
+# Move focused window with arrows 
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -145,6 +156,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# Resize mode 
 mode "resize" {
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
@@ -163,9 +175,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 bindsym $mod+m exec i3-msg bar mode toggle
 
+# Bar configuration, using i3status 
+# Pressing Super+m will hide the bar
+# pressing it again will show the bar 
 bar {
-        status_command i3status 
-        font pango: Roboto Mono, Icon 11
+        status_command i3status
+        font pango: Roboto Mono 11
         position top 
         mode dock 
         modifier Mod1 
@@ -173,29 +188,26 @@ bar {
             background #080808 
             statusline #cccccc
             separator #808080
-            focused_workspace #080808 #222222 #cccccc
+            focused_workspace #080808 #303030 #cccccc
             active_workspace #080808 #080808 #797979 
             inactive_workspace #080808 #080808 #4F4F4F
             urgent_workspace #080808 #080808 #EA4C59
         }
  }
 
-
-# Startup applications
+# Startup programs 
 exec --no-startup-id feh --bg-fill ~/.config/i3/bgg.jpg 
-exec --no-startup-id firefox-nightly 
+exec --no-startup-id firefox
 exec --no-startup-id tg 
 exec --no-startup-id pulseaudio --start 
 exec_always --no-startup-id nm-applet 
 exec --no-startup-id setxkbmap -option ctrl:nocaps
 exec --no-startup-id xmodmap ~/.config/swap_esc
-exec --no-startup-id i3-msg 'workspace 4; exec termite --name=weechat' 
-exec --no-startup-id i3-msg 'workspace 2; exec termite --name=music -e cmus'
-exec --no-startup-id i3-msg 'workspace 5; exec termite --name=mail -e tmux new -s mail'
+exec --no-startup-id dockd --daemon 
 
 # Assign foo to workspaces 
 assign [class="Firefox"] 1
-assign [instance="weechat"] 4
+assign [instance="irc"] 4
 assign [instance="music"] 3
 assign [class="Telegram"] 4
 assign [class="Zathura"] 6
@@ -203,9 +215,17 @@ assign [class="mpv"] 3
 assign [instance="mail"] 5
 assign [class="Netbeans"] 0
 
+# startup programs assigned to workspaces
+exec --no-startup-id i3-msg 'workspace 4; exec termite --name=irc -e weechat' 
+exec --no-startup-id i3-msg 'workspace 2; exec termite --name=scratchpad -e cmus --geometry=900x600'
+exec --no-startup-id i3-msg 'workspace 5; exec termite --name=mail -e neomutt'
+
+# Windows rules 
 for_window [class="mpv"] floating enable
 for_window [class="mpv"] border normal
+for_window [class="Pinentry"] floating enable
 for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
 for_window [instance="scratchpad"] floating enable
 for_window [instance="scratchpad"] move window to scratchpad 
 
