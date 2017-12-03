@@ -14,8 +14,8 @@ client.placeholder      #000000 #0c0c0c #285577 #000000   #0c0c0c
 client.background       #121212
 
 floating_modifier $mod
-new_window 1pixel 
-new_float 1pixel
+new_float  pixel 3
+new_window pixel 3
 
 # Terminal keybinds 
 bindsym $mod+Return exec --no-startup-id termite 
@@ -24,15 +24,17 @@ bindsym $mod+Shift+Return exec --no-startup-id termite -e tmux
 # Back and forth | Borderds
 workspace_auto_back_and_forth yes
 hide_edge_borders smart
+popup_during_fullscreen smart
 
 bindsym $mod+t border normal
-bindsym $mod+y border 1pixel
+bindsym $mod+y border pixel 2 
 bindsym $mod+u border none
 
 # Bind shortcuts
 bindsym $mod+Shift+q kill
 bindsym $mod+p exec firefox
 bindsym $mod+Shift+m exec --no-startup-id termite -e neomutt 
+
 # XF86 Fn keys 
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q sset Master '5%+'
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q sset  Master '5%-'
@@ -47,6 +49,7 @@ bindsym XF86Sleep exec --no-startup-id i3lock -c 000000 && systemctl suspend
 bindsym XF86Launch1 exec --no-startup-id termite
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s 10%+
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 10%-
+
 # dmenu settings 
 bindsym $mod+d exec --no-startup-id dmenu_run -i -l 8 -p "" -nb "#131313" -nf "#cccccc" -sb "#262626" -sf "#ffffff" -fn "RobotoMono-10" 
 
@@ -221,12 +224,12 @@ exec --no-startup-id i3-msg 'workspace 2; exec termite --name=scratchpad -e cmus
 exec --no-startup-id i3-msg 'workspace 5; exec termite --name=mail -e neomutt'
 
 # Windows rules 
-for_window [class="mpv"] floating enable
-for_window [class="mpv"] border normal
 for_window [class="Pinentry"] floating enable
 for_window [window_role="pop-up"] floating enable
+for_window [class="Firefox"] border 1pixel
 for_window [window_role="task_dialog"] floating enable
 for_window [instance="scratchpad"] floating enable
 for_window [instance="scratchpad"] move window to scratchpad 
+for_window [class="Telegram"] border normal 
 
-#  vim: set ft=conf ts=4 sw=4 tw=500 et :
+# vim: set ft=conf ts=4 sw=4 tw=500 et :
