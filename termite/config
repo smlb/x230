@@ -1,12 +1,13 @@
 [options]
-font = Dejavu Sans Mono  9 
+font = Roboto Mono 10
 allow_bold = true
+allow_italic = true 
 resize_grip = false
 scroll_on_output = false
 scroll_on_keystroke = true
 audible_bell = false
 visible_bell = false
-mouse_autohide = false
+mouse_autohide = true
 dynamic_title = true
 urgent_on_bell = true
 clickable_url = true
@@ -38,7 +39,7 @@ color8 = #474747
 color1 = #b14d4c
 color9 = #e7504e
 # green
-color2 = #438064
+color2 = #424242
 color10 = #4ea272
 # yellow
 color3 = #F0E12B
